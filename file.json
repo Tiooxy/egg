@@ -1,0 +1,36 @@
+const { spawn } = require('child_process');
+const os = require('os');
+process.env.TZ = 'Asia/Jakarta';
+
+/**
+ * Function to start a command process.
+ * @param {string} cmd - The command to execute.
+ */
+function start(cmd) {
+    try {
+    
+    console.clear();
+    console.log('\n========================');
+    console.log('📌 Egg PM2 Logs by Tio');
+    console.log('========================\n');
+
+    console.log(`🖥  CPU      : ${os.cpus()[0].model} (${os.cpus().length} Cores)`);
+    console.log(`💾 RAM      : ${(os.freemem() / 1024 / 1024 / 1024).toFixed(2)} GB Free / ${(os.totalmem() / 1024 / 1024 / 1024).toFixed(2)} GB Total`);
+    console.log(`🖥  OS       : ${os.type()} - ${os.release()}`);
+    console.log(`⏳ Uptime   : ${(os.uptime() / 3600).toFixed(2)} Hours\n`);
+    console.log('========================\n');
+    console.log('[ INPUT CMD ] =>\n');
+    
+        const childProcess = spawn(cmd, [], {
+            stdio: ['inherit', 'inherit', 'inherit', 'ipc']
+        });
+
+        childProcess.on('error', (error) => {
+            console.error('Error starting process:', error.message);
+        });
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
+}
+
+start('bash');
